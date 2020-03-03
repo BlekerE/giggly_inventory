@@ -1,4 +1,8 @@
 'use strict'
+//import {Screws, ShippingEnvelopes, Polybags, ABSPlastic, PuppyFeet, Walkers, Grommets, Velcro, VinylRolls, Stickers, GrillBoxes, Cores, Blisters, BlisterCards, WalkerBoxes, RawMaterials} from 'RawMaterials.js'
+//import {Gigglygrills, Gigglyfeet, Gigglyskins} from 'Product.js'
+
+const screws = require('./RawMaterials');
 //Production = {
 class Belovac {
     set redWaiting(red) {
@@ -40,57 +44,57 @@ class Belovac {
     process(color, designName, completed, loss) {
         switch (color) {
             case "red":
-                this.redABSLoss = this.redABSLoss + loss
-                RawMaterials.ABSPlastic.setABSRed(RawMaterials.ABSPlastic.getABSRed() - completed - loss);
+                this._redABSLoss = this._redABSLoss + loss // increase the total loss from the day's loss
+                ABSPlastic.setABSRed(RawMaterials.ABSPlastic.getABSRed() - completed - loss) // (needs fixing) subtract the completed AND lost plastic from the total raw materials red plastic
                 switch (designName) {
                     case "Truck":
-                        Gigglygrills.redTruck = Gigglygrills.redTruck + completed;
-                        Cutting.redTruckGWaiting = redTruckGWaiting + completed;
-                        this.redWaiting = this.redWaiting - completed - loss
+                        Gigglygrills.redTruck = Gigglygrills.redTruck + completed; //needs fixing -- Update Product Class design/color total (add completed)
+                        Cutting.redTruckGWaiting = redTruckGWaiting + completed; //needs fixing -- Update Production step, add completed to guillotine waiting status
+                        this._redWaiting = this._redWaiting - completed - loss //  subtract completed AND loss from the Raw Material plastic waiting
                         break;
                     case "Noteboard":
-                        Gigglygrills.redNoteboard = Gigglygrills.redNoteboard + completed;
-                        Cutting.redNoteboardGWaiting = Cutting.redNoteboardGWaiting + completed;
-                        this.redWaiting = this.redWaiting - completed - loss;
+                        Gigglygrills.redNoteboard = Gigglygrills.redNoteboard + completed; //needs fixing
+                        Cutting.redNoteboardGWaiting = Cutting.redNoteboardGWaiting + completed; //needs fixing
+                        this._redWaiting = this._redWaiting - completed - loss;
                         break;
                 }
                 break;
             case "blue":
-                this.blueLoss = this.blueLoss + loss;
-                RawMaterials.ABSPlastic.setABSBlue(RawMaterials.ABSPlastic.getABSBlue() - completed - loss);
+                this._blueLoss = this._blueLoss + loss;
+                ABSPlastic.setABSBlue(ABSPlastic.getABSBlue() - completed - loss); //needs fixing
                 switch (designName) {
                     case "Truck":
-                        Gigglygrills.blueTruck = Gigglygrills.blueTruck + completed;
-                        Cutting.blueTruckGWaiting = Cutting.blueTruckGWaiting + completed;
-                        this.blueWaiting = this.blueWaiting - comleted - loss;
+                        Gigglygrills.blueTruck = Gigglygrills.blueTruck + completed; //needs fixing
+                        Cutting.blueTruckGWaiting = Cutting.blueTruckGWaiting + completed; //needs fixing
+                        this._blueWaiting = this._blueWaiting - comleted - loss;
                         break;
                     case "Noteboard":
-                        Gigglygrills.blueNoteboard = Gigglygrills.blueNoteboard + completed;
-                        Cutting.blueNoteboardGWaiting = Cutting.blueNoteboardGWaiting + completed;
-                        this.blueWaiting = this.blueWaiting - completed - loss;
+                        Gigglygrills.blueNoteboard = Gigglygrills.blueNoteboard + completed; //needs fixing
+                        Cutting.blueNoteboardGWaiting = Cutting.blueNoteboardGWaiting + completed; //needs fixing
+                        this._blueWaiting = this._blueWaiting - completed - loss;
                         break;
                 }
                 break;
             case "black":
-                this.blackLoss = this.blackLoss + loss;
-                RawMaterials.ABSPlastic.setABSBlack(RawMaterials.ABSPlastic.getABSBlack() - completed - loss);
+                this._blackLoss = this._blackLoss + loss;
+                ABSPlastic.setABSBlack(ABSPlastic.getABSBlack() - completed - loss); //needs fixing
                 switch (designName) {
                     case "Truck":
-                        Gigglygrills.blackTruck = Gigglygrills.blackTruck + completed;
-                        Cutting.blackTruckGWaiting = Cutting.blackTruckGWaiting + completed;
-                        this.blackWaiting = this.blackWaiting - completed - loss;
+                        Gigglygrills.blackTruck = Gigglygrills.blackTruck + completed; //needs fixing
+                        Cutting.blackTruckGWaiting = Cutting.blackTruckGWaiting + completed; //needs fixing
+                        this._blackWaiting = this._blackWaiting - completed - loss;
                         break;
                     case "Noteboard":
-                        Gigglygrills.blackNoteboard = Gigglygrills.blackNoteboard + completed;
-                        Cutting.blackNoteboardGWaiting = cutting.blackNoteboardGWaiting + completed;
-                        this.blackWaiting = this.blackWaiting - completed - loss;
+                        Gigglygrills.blackNoteboard = Gigglygrills.blackNoteboard + completed; //needs fixing
+                        Cutting.blackNoteboardGWaiting = Cutting.blackNoteboardGWaiting + completed; //needs fixing
+                        this._blackWaiting = this._blackWaiting - completed - loss;
                         break;
                 }
                 break;
         }
     }
 }
-class Cutting{
+class Cutting {
     //Note: Most of the variables in the comments below don't have set-get methods yet
     // redTruckGuillWaiting,
     // blueTruckGuillWaiting,
@@ -128,40 +132,40 @@ class Cutting{
     // redNoteboardSandLoss,
     // blueNoteboardSandLoss,
     // blackNoteboardSandLoss,
-    set redTruckGWaiting(rWait){
+    set redTruckGWaiting(rWait) {
         this._redTruckGWaiting = rWait;
     }
-    get redTruckGWaiting(){
+    get redTruckGWaiting() {
         return this._redTruckGWaiting;
     }
-    set blueTruckGWaiting(bWait){
+    set blueTruckGWaiting(bWait) {
         this._blueTruckGWaiting = bWait;
     }
-    get blueTruckGWaiting(){
+    get blueTruckGWaiting() {
         return this._blueTruckGWaiting;
     }
-    set blackTruckGWaiting(blWait){
+    set blackTruckGWaiting(blWait) {
         this._blackTruckGWaiting = blWait;
     }
-    get blackTruckGWaiting(){
+    get blackTruckGWaiting() {
         return this._blackTruckGWaiting;
     }
-    set redNoteboardGWaiting(rWait){
+    set redNoteboardGWaiting(rWait) {
         this._redNoteboardGWaiting = rWait;
     }
-    get redNoteboardGWaiting(){
+    get redNoteboardGWaiting() {
         return this._redNoteboardGWaiting;
     }
-    set blueNoteboardGWaiting(bWait){
+    set blueNoteboardGWaiting(bWait) {
         this._blueNoteboardGWaiting = bWait;
     }
-    get blueNoteboardGWaiting(){
+    get blueNoteboardGWaiting() {
         return this._blueNoteboardGWaiting;
     }
-    set blackNoteboardGWaiting(blWait){
+    set blackNoteboardGWaiting(blWait) {
         this._blackNoteboardGWaiting = blWait;
     }
-    get blackNoteboardGWaiting(){
+    get blackNoteboardGWaiting() {
         return this._blackNoteboardGWaiting;
     }
     guillotine(color, designName, completed, loss) {
@@ -169,134 +173,134 @@ class Cutting{
             case "red":
                 switch (designName) {
                     case "Truck":
-                        this.redTruckRotoWaiting += completed;
-                        this.redTruckGuillLoss += loss;
-                        this.redTruckGuillWaiting -= (completed + loss);
+                        this._redTruckRotoWaiting += completed;
+                        this._redTruckGuillLoss += loss;
+                        this._redTruckGuillWaiting -= (completed + loss);
                         break;
                     case "Noteboard":
-                        this.redNoteboardRotoWaiting += completed;
-                        this.redNoteboardGuillLoss += loss;
-                        this.redNoteboardGuillWaiting -= (completed + loss);
+                        this._redNoteboardRotoWaiting += completed;
+                        this._redNoteboardGuillLoss += loss;
+                        this._redNoteboardGuillWaiting -= (completed + loss);
                         break;
                 }
                 break;
             case "blue":
                 switch (designName) {
                     case "Truck":
-                        this.blueTruckRotoWaiting += completed;
-                        this.blueTruckGuillLoss += loss;
-                        this.blueTruckGuillWaiting -= (completed + loss);
+                        this._blueTruckRotoWaiting += completed;
+                        this._blueTruckGuillLoss += loss;
+                        this._blueTruckGuillWaiting -= (completed + loss);
                         break;
                     case "Noteboard":
-                        this.blueNoteboardRotoWaiting += completed;
-                        this.blueNoteboardGuillLoss += loss;
-                        this.blueNoteboardGuillWaiting -= (completed + loss);
+                        this._blueNoteboardRotoWaiting += completed;
+                        this._blueNoteboardGuillLoss += loss;
+                        this._blueNoteboardGuillWaiting -= (completed + loss);
                         break;
                 }
                 break;
             case "black":
                 switch (designName) {
                     case "Truck":
-                        this.blackTruckRotoWaiting += completed;
-                        this.blackTruckGuillLoss += loss;
-                        this.blackTruckGuillWaiting -= (completed + loss);
+                        this._blackTruckRotoWaiting += completed;
+                        this._blackTruckGuillLoss += loss;
+                        this._blackTruckGuillWaiting -= (completed + loss);
                         break;
                     case "Noteboard":
-                        this.blackNoteboardRotoWaiting += completed;
-                        this.blackNoteboardGuillLoss += loss;
-                        this.blackNoteboardGuillWaiting -= (completed + loss);
+                        this._blackNoteboardRotoWaiting += completed;
+                        this._blackNoteboardGuillLoss += loss;
+                        this._blackNoteboardGuillWaiting -= (completed + loss);
                         break;
                 }
                 break;
         }
     }
-    rotozip (color, designName, completed, loss) {
+    rotozip(color, designName, completed, loss) {
         switch (color) {
             case "red":
                 switch (designName) {
                     case "Truck":
-                        this.redTruckSandWaiting += completed;
-                        this.redTruckRotoLoss += loss;
-                        this.redTruckRotoWaiting -= (completed + loss);
+                        this._redTruckSandWaiting += completed;
+                        this._redTruckRotoLoss += loss;
+                        this._redTruckRotoWaiting -= (completed + loss);
                         break;
                     case "Noteboard":
-                        this.redNoteboardSandWaiting += completed;
-                        this.redNoteboardRotoLoss += loss;
-                        this.redTruckRotoWaiting -= (completed + loss);
+                        this._redNoteboardSandWaiting += completed;
+                        this._redNoteboardRotoLoss += loss;
+                        this._redTruckRotoWaiting -= (completed + loss);
                         break;
                 }
                 break;
             case "blue":
                 switch (designName) {
                     case "Truck":
-                        this.blueTruckSandWaiting += completed;
-                        this.blueTruckRotoLoss += loss;
-                        this.blueTruckRotoWaiting -= (completed + loss);
+                        this._blueTruckSandWaiting += completed;
+                        this._blueTruckRotoLoss += loss;
+                        this._blueTruckRotoWaiting -= (completed + loss);
                         break;
                     case "Noteboard":
-                        this.blueNoteboardSandWaiting += completed;
-                        this.blueNoteboardRotoLoss += loss;
-                        this.blueNoteboardRotoWaiting -= (completed + loss);
+                        this._blueNoteboardSandWaiting += completed;
+                        this._blueNoteboardRotoLoss += loss;
+                        this._blueNoteboardRotoWaiting -= (completed + loss);
                         break;
                 }
                 break;
             case "black":
                 switch (designName) {
                     case "Truck":
-                        this.blackTruckSandWaiting += completed;
-                        this.blackTruckRotoLoss += loss;
-                        this.blackTruckRotoWaiting -= (completed + loss);
+                        this._blackTruckSandWaiting += completed;
+                        this._blackTruckRotoLoss += loss;
+                        this._blackTruckRotoWaiting -= (completed + loss);
                         break;
                     case "Noteboard":
-                        this.blackNoteboardSandWaiitng += completed;
-                        this.blackNoteboardRotoLoss += loss;
-                        this.blackNoteboardRotoWaiting -= (completed + loss);
+                        this._blackNoteboardSandWaiitng += completed;
+                        this._blackNoteboardRotoLoss += loss;
+                        this._blackNoteboardRotoWaiting -= (completed + loss);
                         break;
                 }
                 break;
         }
     }
-    sanding (color, designName, completed, loss) {
+    sanding(color, designName, completed, loss) {
         switch (color) {
             case "red":
                 switch (designName) {
                     case "Truck":
-                        setRedTruckVWaiting(getRedTruckVWaiting() + completed);
-                        this.redTruckSandLoss += loss;
-                        this.redTruckSandWaiting -= (completed + loss);
+                        this._redTruckVelcroWaiting = this._redTruckVelcroWaiting + completed
+                        this._redTruckSandLoss += loss;
+                        this._redTruckSandWaiting -= (completed + loss);
                         break;
                     case "Noteboard":
-                        setRedNoteboardVWaiting(getRedNoteboardVWaiting() + completed);
-                        this.redNoteboardSandLoss += loss;
-                        this.redNoteboardSandWaiting -= (completed + loss);
+                        this._redNoteboardVelcroWaiting = this._redNoteboardVelcroWaiting + completed
+                        this._redNoteboardSandLoss += loss;
+                        this._redNoteboardSandWaiting -= (completed + loss);
                         break;
                 }
                 break;
             case "blue":
                 switch (designName) {
                     case "Truck":
-                        setBlueTruckVWaiting(getBlueTruckVWaiting() + completed);
-                        this.blueTruckSandLoss += loss;
-                        this.blueTruckSandWaiting -= (completed + loss);
+                        this._blueTruckVelcroWaiting = this._blueTruckVelcroWaiting + completed
+                        this._blueTruckSandLoss += loss;
+                        this._blueTruckSandWaiting -= (completed + loss);
                         break;
                     case "Noteboard":
-                        setBlueNoteboardVWaiting(getBlueNoteboardVWaiting() + completed);
-                        this.blueNoteboardSandLoss += loss;
-                        this.blueNoteboardSandWaiting -= (completed + loss);
+                        this._blueNoteboardVelcroWaiting = this._blueNoteboardVelcroWaiting + completed
+                        this._blueNoteboardSandLoss += loss;
+                        this._blueNoteboardSandWaiting -= (completed + loss);
                         break;
                 }
                 break;
             case "black":
                 switch (designName) {
                     case "Truck":
-                        setBlackTruckVWaiting(getBlackTruckVWaiting() + completed);
-                        this.blackTruckSandLoss += loss;
-                        this.blackTruckSandWaiting -= (completed + loss);
+                        this._blackTruckVelcroWaiting = this._blackTruckVelcroWaiting + completed
+                        this._blackTruckSandLoss += loss;
+                        this._blackTruckSandWaiting -= (completed + loss);
                         break;
                     case "Noteboard":
-                        setBlackNoteboardVWaiting(getBlackNoteboardVWaiting() + completed);
-                        this.blackNoteboardSandLoss += loss;
-                        this.blackNoteboardSandWaiting -= (completed + loss);
+                        this._blackNoteboardVelcroWaiting = this._blackNoteboardVelcroWaiting + completed
+                        this._blackNoteboardSandLoss += loss;
+                        this._blackNoteboardSandWaiting -= (completed + loss);
                         break;
                 }
                 break;
@@ -385,49 +389,49 @@ class Assembly {
     get BlackNoteboardVWaiting() {
         return this._blackNoteboardVelcroWaiting;
     }
-    velcro (color, designName, completed, loss) {
-        RawMaterials.Grommets.setTotalGrommets(RawMaterials.Grommets.getTotalGrommets() - (completed * 4));
-        RawMaterials.Velcro.setTotalVelcro(RawMaterials.Velcro.getTotalVelcro() - (completed * 4));
+    velcro(color, designName, completed, loss) {
+        Grommets.setTotalGrommets(Grommets.getTotalGrommets() - (completed * 4)); //needs fixing
+        Velcro.setTotalVelcro(Velcro.getTotalVelcro() - (completed * 4)); //needs fixing
         switch (color) {
             case "red":
                 switch (designName) {
                     case "Truck":
-                        this.redTruckStickerWaiting += completed;
-                        this.redTruckVelcroLoss += loss;
-                        this.redTruckVelcroWaiting -= (completed + loss);
+                        this._redTruckStickerWaiting += completed;
+                        this._redTruckVelcroLoss += loss;
+                        this._redTruckVelcroWaiting -= (completed + loss);
                         break;
                     case "Noteboard":
-                        this.redNoteboardStickerWaiting += completed;
-                        this.redNoteboardVelcroLoss += loss;
-                        this.redNoteboardVelcroWaiting -= (completed + loss);
+                        this._redNoteboardStickerWaiting += completed;
+                        this._redNoteboardVelcroLoss += loss;
+                        this._redNoteboardVelcroWaiting -= (completed + loss);
                         break;
                 }
                 break;
             case "blue":
                 switch (designName) {
                     case "Truck":
-                        this.blueTruckStickerWaiting += completed;
-                        this.blueTruckVelcroLoss += loss;
-                        this.blueTruckVelcroWaiting -= (completed + loss);
+                        this._blueTruckStickerWaiting += completed;
+                        this._blueTruckVelcroLoss += loss;
+                        this._blueTruckVelcroWaiting -= (completed + loss);
                         break;
                     case "Noteboard":
-                        this.blueNoteboardStickerWaiting += completed;
-                        this.blueNoteboardVelcroLoss += loss;
-                        this.blueNoteboardVelcroWaiting -= (completed + loss);
+                        this._blueNoteboardStickerWaiting += completed;
+                        this._blueNoteboardVelcroLoss += loss;
+                        this._blueNoteboardVelcroWaiting -= (completed + loss);
                         break;
                 }
                 break;
             case "black":
                 switch (designName) {
                     case "Truck":
-                        this.blackTruckStickerWaiting += completed;
-                        this.blackTruckVelcroLoss += loss;
-                        this.blackTruckVelcroWaiting -= (completed + loss);
+                        this._blackTruckStickerWaiting += completed;
+                        this._blackTruckVelcroLoss += loss;
+                        this._blackTruckVelcroWaiting -= (completed + loss);
                         break;
                     case "Noteboard":
-                        this.blackNoteboardStickerWaiting += completed;
-                        this.blackNoteboardVelcroLoss += loss;
-                        this.blackNoteboardVelcroWaiting -= (completed + loss);
+                        this._blackNoteboardStickerWaiting += completed;
+                        this._blackNoteboardVelcroLoss += loss;
+                        this._blackNoteboardVelcroWaiting -= (completed + loss);
                         break;
                 }
                 break;
@@ -438,42 +442,42 @@ class Assembly {
             case "red":
                 switch (designName) {
                     case "Truck":
-                        RawMaterials.Stickers.setTruckStickerTotal(RawMaterials.Stickers.getTruckStickerTotal() - completed);
-                        setRedTruckPackWaiting(getRedTruckPackWaiting() + completed);
-                        this.redTruckStickerWaiting -= completed;
+                        Stickers.setTruckStickerTotal(Stickers.getTruckStickerTotal() - completed) //needs fixing
+                        this._redTruckPackWaiting = this._redTruckPackWaiting + completed
+                        this._redTruckStickerWaiting -= completed
                         break;
                     case "Noteboard":
-                        RawMaterials.Stickers.setNoteboardStickerTotal(RawMaterials.Stickers.getNoteboardStickerTotal() - completed);
-                        setRedNoteboardPackWaiting(getRedNoteboardPackWaiting() + completed);
-                        this.redNoteboardStickerWaiting -= completed;
+                        Stickers.setNoteboardStickerTotal(Stickers.getNoteboardStickerTotal() - completed) //needs fixing
+                        this._redNoteboardPackWaiting = this._redNoteboardPackWaiting + completed
+                        this._redNoteboardStickerWaiting -= completed
                         break;
                 }
                 break;
             case "blue":
                 switch (designName) {
                     case "Truck":
-                        RawMaterials.Stickers.setTruckStickerTotal(RawMaterials.Stickers.getTruckStickerTotal() - completed);
-                        setBlueTruckPackWaiting(getBlueTruckPackWaiting() + completed);
-                        this.blueTruckStickerWaiting -= completed;
+                        Stickers.setTruckStickerTotal(Stickers.getTruckStickerTotal() - completed); //needs fixing
+                        this._blueTruckPackWaiting = this._blueTruckPackWaiting + completed
+                        this._blueTruckStickerWaiting -= completed;
                         break;
                     case "Noteboard":
-                        RawMaterials.Stickers.setNoteboardStickerTotal(RawMaterials.Stickers.getNoteboardStickerTotal() - completed);
-                        setBlueNoteboardPackWaiting(getBlueNoteboardPackWaiting() + completed);
-                        this.blueNoteboardStickerWaiting -= completed;
+                        Stickers.setNoteboardStickerTotal(Stickers.getNoteboardStickerTotal() - completed); //needs fixing
+                        this._blueNoteboardPackWaiting = this._blueNoteboardPackWaiting + completed
+                        this._blueNoteboardStickerWaiting -= completed;
                         break;
                 }
                 break;
             case "black":
                 switch (designName) {
                     case "Truck":
-                        RawMaterials.Stickers.setTruckStickerTotal(RawMaterials.Stickers.getTruckStickerTotal() - completed);
-                        setBlackTruckPackWaiting(getBlackTruckPackWaiting() + completed);
-                        this.blackTruckStickerWaiting -= completed;
+                        Stickers.setTruckStickerTotal(Stickers.getTruckStickerTotal() - completed); //needs fixing
+                        this._blackTruckPackWaiting = this._blackTruckPackWaiting + completed
+                        this._blackTruckStickerWaiting -= completed;
                         break;
                     case "Noteboard":
-                        RawMaterials.Stickers.setNoteboardStickerTotal(RawMaterials.Stickers.getNoteboardStickerTotal() - completed);
-                        setBlackNoteboardPackWaiting(getBlackNoteboardPackWaiting() + completed);
-                        this.blackNoteboardStickerWaiting -= completed;
+                        Stickers.setNoteboardStickerTotal(Stickers.getNoteboardStickerTotal() - completed); //needs fixing
+                        this._blackNoteboardPackWaiting = this._blackNoteboardPackWaiting + completed
+                        this._blackNoteboardStickerWaiting -= completed;
                         break;
                 }
                 break;
@@ -482,286 +486,287 @@ class Assembly {
     trim(color, design, completed, loss) {
         switch (color) {
             case "red":
-                RawMaterials.PuppyFeet.setRedFeet(RawMaterials.PuppyFeet.getRedFeet() - loss);
+                PuppyFeet.setRedFeet(PuppyFeet.getRedFeet() - loss);
                 switch (design) {
                     case "Paw":
-                        this.redPawScrewWaiting += completed;
-                        this.redPawTrimLoss += loss;
-                        this.redPawTrimWaiting -= (completed + loss);
+                        this._redPawScrewWaiting += completed;
+                        this._redPawTrimLoss += loss;
+                        this._redPawTrimWaiting -= (completed + loss);
                         break;
                 }
                 break;
             case "blue":
-                RawMaterials.PuppyFeet.setBlueFeet(RawMaterials.PuppyFeet.getBlueFeet() - loss);
+                PuppyFeet.setBlueFeet(PuppyFeet.getBlueFeet() - loss);
                 switch (design) {
                     case "Paw":
-                        this.bluePawScrewWaiting += completed;
-                        this.bluePawTrimLoss += loss;
-                        this.bluePawTrimWaiting -= (completed + loss);
+                        this._bluePawScrewWaiting += completed;
+                        this._bluePawTrimLoss += loss;
+                        this._bluePawTrimWaiting -= (completed + loss);
                         break;
                 }
                 break;
             case "black":
-                RawMaterials.PuppyFeet.setBlackFeet(RawMaterials.PuppyFeet.getBlackFeet() - loss);
+                PuppyFeet.setBlackFeet(PuppyFeet.getBlackFeet() - loss);
                 switch (design) {
                     case "Paw":
-                        this.blackPawScrewWaiting += completed;
-                        this.blackPawTrimLoss += loss;
-                        this.blackPawTrimWaiting -= (completed + loss);
+                        this._blackPawScrewWaiting += completed;
+                        this._blackPawTrimLoss += loss;
+                        this._blackPawTrimWaiting -= (completed + loss);
                         break;
                 }
                 break;
         }
     }
-    screw (color, design, completed, loss) {
-        RawMaterials.Screws.setTotalScrews(RawMaterials.Screws.getTotalScrews() - completed);
-        RawMaterials.Cores.setTotalCores(RawMaterials.Cores.getTotalCores() - completed);
+    screw(color, design, completed, loss) {
+        Screws.setTotalScrews(Screws.getTotalScrews() - completed);
+        Cores.setTotalCores(Cores.getTotalCores() - completed);
         switch (color) {
             case "red":
-                RawMaterials.PuppyFeet.setRedFeet(RawMaterials.PuppyFeet.getRedFeet() - loss);
+                PuppyFeet.setRedFeet(PuppyFeet.getRedFeet() - loss);
                 switch (design) {
                     case "Paw":
-                        setRedPawBlisterWaiting(getRedPawBlisterWaiting() + completed);
-                        this.redPawScrewLoss += loss;
-                        this.redPawScrewWaiting -= (completed + loss);
+                        this._redPawBlisterWaiting = this._redPawBlisterWaiting + completed
+                        this._redPawScrewLoss += loss;
+                        this._redPawScrewWaiting -= (completed + loss);
                         break;
                 }
                 break;
             case "blue":
-                RawMaterials.PuppyFeet.setBlueFeet(RawMaterials.PuppyFeet.getBlueFeet() - loss);
+                PuppyFeet.setBlueFeet(PuppyFeet.getBlueFeet() - loss);
                 switch (design) {
                     case "Paw":
-                        setBluePawBlisterWaiting(getBluePawBlisterWaiting() + completed);
-                        this.bluePawScrewLoss += loss;
-                        this.bluePawScrewWaiting -= (completed + loss);
+                        this._bluePawBlisterWaiting = this._bluePawBlisterWaiting + completed
+                        this._bluePawScrewLoss += loss;
+                        this._bluePawScrewWaiting -= (completed + loss);
                         break;
                 }
                 break;
             case "black":
-                RawMaterials.PuppyFeet.setBlackFeet(RawMaterials.PuppyFeet.getBlackFeet() - loss);
+                PuppyFeet.setBlackFeet(PuppyFeet.getBlackFeet() - loss);
                 switch (design) {
                     case "Paw":
-                        setBlackPawBlisterWaiting(getBlackPawBlisterWaiting() + completed);
-                        this.blackPawScrewLoss += loss;
-                        this.blackPawScrewWaiting -= (completed + loss);
+                        this._blackPawBlisterWaiting = this._blackPawBlisterWaiting + completed
+                        this._blackPawScrewLoss += loss;
+                        this._blackPawScrewWaiting -= (completed + loss);
                         break;
                 }
                 break;
         }
     }
-    wrap (walkerType, design, completed) {
+    wrap(walkerType, design, completed) {
         switch (walkerType) {
             case "four-wheel":
                 switch (design) {
                     case "Wonderfall":
-                        setWonderfallSkin4WpackWaiting(getWonderfallSkin4WPackWaiting() + completed);
-                        this.walker4wWrapWaiting -= completed;
-                        RawMaterials.Walkers.setWalker4WTotal(RawMaterials.Walkers.getWalker4WTotal() - completed);
-                        Product.gigglyskins.setWonderfallSkins4W(Product.gigglyskins.getWonderfallSkins4W() + completed);
+                        this._wonderfallSkin4WPackWaiting = this._wonderfallSkin4WPackWaiting + completed
+                        this._walker4wWrapWaiting -= completed;
+                        Walkers.setWalker4WTotal(Walkers.getWalker4WTotal() - completed); //needs fixing
+                        Gigglyskins.setWonderfallSkins4W(Gigglyskins.getWonderfallSkins4W() + completed); //needs fixing
                         break;
                     case "Barktastic":
-                        setBarktasticSkin4WPackWaiting(getBarktasticSkin4WPackWaiting() + completed);
-                        this.walker4wWrapWaiting -= completed;
-                        RawMaterials.Walkers.setWalker4WTotal(RawMaterials.Walkers.getWalker4WTotal() - completed);
-                        Product.gigglyskins.setBarktasticSkins4W(Product.gigglyskins.getBarktasticSkins4W() + completed);
+                        this._barktasticSkin4WPackWaiting = this._barktasticSkin4WPackWaiting + completed
+                        this._walker4wWrapWaiting -= completed;
+                        Walkers.setWalker4WTotal(Walkers.getWalker4WTotal() - completed); //needs fixing
+                        Gigglyskins.setBarktasticSkins4W(Gigglyskins.getBarktasticSkins4W() + completed); //needs fixing
                         break;
                     case "Patriotic":
-                        setPatrioticSkin4WPackWaiting(getPatrioticSkin4WPackWaiting() + completed);
-                        this.walker4wWrapWaiting -= completed;
-                        RawMaterials.Walkers.setWalker4WTotal(RawMaterials.Walkers.getWalker4WTotal() - completed);
-                        Product.gigglyskins.setPatrioticSkins4W(Product.gigglyskins.getPatrioticSkins4W() + completed);
+                        this._patrioticSkin4WPackWaiting = this._patrioticSkin4WPackWaiting + completed
+                        this._walker4wWrapWaiting -= completed;
+                        Walkers.setWalker4WTotal(Walkers.getWalker4WTotal() - completed); //needs fixing
+                        Gigglyskins.setPatrioticSkins4W(Gigglyskins.getPatrioticSkins4W() + completed); //needs fixing
                         break;
                     case "Flowerific":
-                        setFlowerificSkin4WPackWaiting(getFlowerificSkin4WPackWaiting() + completed);
-                        this.walker4wWrapWaiting -= completed;
-                        RawMaterials.Walkers.setWalker4WTotal(RawMaterials.Walkers.getWalker4WTotal() - completed);
-                        Product.gigglyskins.setFlowerificSkins4W(Product.gigglyskins.getFlowerificSkins4W() + completed);
+                        this._flowerificSkin4WPackWaiting = this._flowerificSkin4WPackWaiting + completed
+                        this._walker4wWrapWaiting -= completed;
+                        Walkers.setWalker4WTotal(Walkers.getWalker4WTotal() - completed); //needs fixing
+                        Gigglyskins.setFlowerificSkins4W(Gigglyskins.getFlowerificSkins4W() + completed); //needs fixing
                         break;
                     case "Military":
-                        setMilitarySkin4WPackWaiting(getMilitarySkin4WPackWaiting() + completed);
-                        this.walker4wWrapWaiting -= completed;
-                        RawMaterials.Walkers.setWalker4WTotal(RawMaterials.Walkers.getWalker4WTotal() - completed);
-                        Product.gigglyskins.setMilitarySkins4W(Product.gigglyskins.getMilitarySkins4W() + completed);
+                        this._militarySkin4WPackWaiting = this._militarySkin4WPackWaiting + completed
+                        this._walker4wWrapWaiting -= completed;
+                        Walkers.setWalker4WTotal(Walkers.getWalker4WTotal() - completed); //needs fixing
+                        Gigglyskins.setMilitarySkins4W(Gigglyskins.getMilitarySkins4W() + completed); // needs fixing
                         break;
                 }
                 break;
             case "two-wheel":
                 switch (design) {
                     case "Wonderfall":
-                        setWonderfallSkin2WpackWaiting(getWonderfallSkin2WPackWaiting() + completed);
-                        this.walker2wWrapWaiting -= completed;
-                        RawMaterials.Walkers.setWalker2WTotal(RawMaterials.Walkers.getWalker2WTotal() - completed);
+                        this._wonderfallSkin4WPackWaiting = this._wonderfallSkin4WPackWaiting + completed
+                        this._walker2wWrapWaiting -= completed;
+                        Walkers.setWalker2WTotal(Walkers.getWalker2WTotal() - completed); //needs fixing
+                        Gigglyskins.setWonderfallSkin //needs fixing
                         break;
                     case "Barktastic":
-                        setBarktasticSkin2WPackWaiting(getBarktasticSkin2WPackWaiting() + completed);
-                        this.walker2wWrapWaiting -= completed;
-                        RawMaterials.Walkers.setWalker2WTotal(RawMaterials.Walkers.getWalker2WTotal() - completed);
+                        this._barktasticSkin4WPackWaiting = this._barktasticSkin4WPackWaiting + completed
+                        this._walker2wWrapWaiting -= completed;
+                        Walkers.setWalker2WTotal(Walkers.getWalker2WTotal() - completed); //needs fixing
                         break;
                     case "Patriotic":
-                        setPatrioticSkin2WPackWaiting(getPatrioticSkin2WPackWaiting() + completed);
-                        this.walker2wWrapWaiting -= completed;
-                        RawMaterials.Walkers.setWalker2WTotal(RawMaterials.Walkers.getWalker2WTotal() - completed);
+                        this._patrioticSkin4WPackWaiting = this._patrioticSkin4WPackWaiting + completed
+                        this._walker2wWrapWaiting -= completed;
+                        Walkers.setWalker2WTotal(Walkers.getWalker2WTotal() - completed); //needs fixing
                         break;
                     case "Flowerific":
-                        setFlowerificSkin2WPackWaiting(getFlowerificSkin2WPackWaiting() + completed);
-                        this.walker2wWrapWaiting -= completed;
-                        RawMaterials.Walkers.setWalker2WTotal(RawMaterials.Walkers.getWalker2WTotal() - completed);
+                        this._flowerificSkin4WPackWaiting = this._flowerificSkin4WPackWaiting + completed
+                        this._walker2wWrapWaiting -= completed;
+                        Walkers.setWalker2WTotal(Walkers.getWalker2WTotal() - completed); //needs fixing
                         break;
                     case "Military":
-                        setMilitarySkin2WPackWaiting(getMilitarySkin2WPackWaiting() + completed);
-                        this.walker2wWrapWaiting -= completed;
-                        RawMaterials.Walkers.setWalker2WTotal(RawMaterials.Walkers.getWalker2WTotal() - completed);
+                        this._militarySkin4WPackWaiting = this._militarySkin4WPackWaiting + completed
+                        this._walker2wWrapWaiting -= completed;
+                        Walkers.setWalker2WTotal(Walkers.getWalker2WTotal() - completed); //needs fixing
                         break;
                 }
                 break;
         }
     }
 }
-class Shipping{
+class Shipping {
     set redPawBlisterWaiting(newWaiting) {
-        this.redPawBlisterWaiting = newWaiting;
+        this._redPawBlisterWaiting = newWaiting;
     }
     get redPawBlisterWaiting() {
-        return this.redPawBlisterWaiting;
+        return this._redPawBlisterWaiting;
     }
     set bluePawBlisterWaiting(newWaiting) {
-        this.bluePawBlisterWaiting = newWaiting;
+        this._bluePawBlisterWaiting = newWaiting;
     }
     get bluePawBlisterWaiting() {
-        return this.bluePawBlisterWaiting;
+        return this._bluePawBlisterWaiting;
     }
     set blackPawBlisterWaiting(newWaiting) {
-        this.blackPawBlisterWaiting = newWaiting;
+        this._blackPawBlisterWaiting = newWaiting;
     }
     get blackPawBlisterWaiting() {
-        return this.blackPawBlisterWaiting;
+        return this._blackPawBlisterWaiting;
     }
     set redTruckPackWaiting(newWaiting) {
-        this.redTruckPackWaiting = newWaiting;
+        this._redTruckPackWaiting = newWaiting;
     }
     get redTruckPackWaiting() {
-        return this.redTruckPackWaiting;
+        return this._redTruckPackWaiting;
     }
     set blueTruckPackWaiting(newWaiting) {
-        this.blueTruckPackWaiting = newWaiting;
+        this._blueTruckPackWaiting = newWaiting;
     }
     get blueTruckPackWaiting() {
-        return this.blueTruckPackWaiting;
+        return this._blueTruckPackWaiting;
     }
     set blackTruckPackWaiting(newWaiting) {
-        this.blackTruckPackWaiting = newWaiting;
+        this._blackTruckPackWaiting = newWaiting;
     }
     get blackTruckPackWaiting() {
-        return this.blackTruckPackWaiting;
+        return this._blackTruckPackWaiting;
     }
     set redNoteboardPackWaiting(newWaiting) {
-        this.redNoteboardPackWaiting = newWaiting;
+        this._redNoteboardPackWaiting = newWaiting;
     }
     get redNoteboardPackWaiting() {
-        return this.redNoteboardPackWaiting;
+        return this._redNoteboardPackWaiting;
     }
     set blueNoteboardPackWaiting(newWaiting) {
-        this.blueNoteboardPackWaiting = newWaiting;
+        this._blueNoteboardPackWaiting = newWaiting;
     }
     get blueNoteboardPackWaiting() {
-        return this.blueNoteboardPackWaiting;
+        return this._blueNoteboardPackWaiting;
     }
     set blackNoteboardPackWaiting(newWaiting) {
-        this.blackNoteboardPackWaiting = newWaiting;
+        this._blackNoteboardPackWaiting = newWaiting;
     }
     get blackNoteboardPackWaiting() {
-        return this.blackNoteboardPackWaiting;
+        return this._blackNoteboardPackWaiting;
     }
     set wonderfallSkin4WpackWaiting(newW) {
-        this.wonderfallSkin4WPackWaiting = newW;
+        this._wonderfallSkin4WPackWaiting = newW;
     }
     get wonderfallSkin4WPackWaiting() {
-        return this.wonderfallSkin4WPackWaiting;
+        return this._wonderfallSkin4WPackWaiting;
     }
     set wonderfallSkin2WPackWaiting(newWW) {
-        this.wonderfallSkin2WPackWaiting = newWW;
+        this._wonderfallSkin2WPackWaiting = newWW;
     }
     get wonderfallSkin2WPackWaiting() {
-        return this.wonderfallSkin2WPackWaiting;
+        return this._wonderfallSkin2WPackWaiting;
     }
     set barktasticSkin4WPackWaiting(newB) {
-        this.barktasticSkin4WPackWaiting = newB;
+        this._barktasticSkin4WPackWaiting = newB;
     }
     get barktasticSkin4WPackWaiting() {
-        return this.barktasticSkin4WPackWaiting;
+        return this._barktasticSkin4WPackWaiting;
     }
     set barktasticSkin2WPackWaiting(newBB) {
-        this.barktasticSkin2WPackWaiting = newBB;
+        this._barktasticSkin2WPackWaiting = newBB;
     }
     get barktasticSkin2WPackWaiting() {
-        return this.barktasticSkin2WPackWaiting;
+        return this._barktasticSkin2WPackWaiting;
     }
     set patrioticSkin4WPackWaiting(newP) {
-        this.patrioticSkin4WPackWaiting = newP;
+        this._patrioticSkin4WPackWaiting = newP;
     }
     get patrioticSkin4WPackWaiting() {
-        return this.patrioticSkin4WPackWaiting;
+        return this._patrioticSkin4WPackWaiting;
     }
     set patrioticSkin2WPackWaiting(newPP) {
-        this.PatrioticSkin2WPackWaiting = newPP;
+        this._PatrioticSkin2WPackWaiting = newPP;
     }
     get patrioticSkin2WPackWaiting() {
-        return this.patrioticSkin2WPackWaiting;
+        return this._patrioticSkin2WPackWaiting;
     }
     set flowerificSkin4WPackWaiting(newF) {
-        this.flowerificSkin4WPackWaiting = newF;
+        this._flowerificSkin4WPackWaiting = newF;
     }
     get flowerificSkin4WPackWaiting() {
-        return this.flowerificSkin4WPackWaiting;
+        return this._flowerificSkin4WPackWaiting;
     }
     set flowerificSkin2WPackWaiting(newFF) {
-        this.flowerificSkin2WPackWaiting = newFF;
+        this._flowerificSkin2WPackWaiting = newFF;
     }
     get flowerificSkin2WPackWaiting() {
-        return this.flowerificSkin2WPackWaiting;
+        return this._flowerificSkin2WPackWaiting;
     }
     set militarySkin4WPackWaiting(newM) {
-        this.militarySkin4WPackWaiting = newM;
+        this._militarySkin4WPackWaiting = newM;
     }
     get militarySkin4WPackWaiting() {
-        return this.militarySkin4WPackWaiting;
+        return this._militarySkin4WPackWaiting;
     }
     set militarySkin2WPackWaiting(newMM) {
-        this.militarySkin2WPackWaiting = newMM;
+        this._militarySkin2WPackWaiting = newMM;
     }
     get militarySkin2WPackWaiting() {
-        return this.militarySkin2WPackWaiting;
+        return this._militarySkin2WPackWaiting;
     }
     blisterPack(color, design, completed) {
-        RawMaterials.BlisterCards.setTotalCards(RawMaterials.BlisterCards.getTotalCards() - completed);
+        BlisterCards.setTotalCards(RawMaterials.BlisterCards.getTotalCards() - completed); // needs fixing
         switch (color) {
             case "red":
                 switch (design) {
                     case "Paw":
-                        RawMaterials.Blisters.setTotalPawBlisters(RawMaterials.Blisters.getTotalPawBlisters() - completed);
-                        RawMaterials.Stickers.setRedTruckUPCTotal(RawMaterials.Stickers.getRedTruckUPCTotal() - completed);
-                        Product.gigglyfeet.puppyPaw.setRdyShipRedPaws(Product.gigglyfeet.puppyPaw.getRdyShipRedPaws() + completed);
-                        this.redPawBlisterWaiting -= completed;
+                        Blisters.setTotalPawBlisters(RawMaterials.Blisters.getTotalPawBlisters() - completed); // needs fixing
+                        Stickers.setRedTruckUPCTotal(RawMaterials.Stickers.getRedTruckUPCTotal() - completed); // needs fixing
+                        Gigglyfeet.puppyPaw.setRdyShipRedPaws(Gigglyfeet.puppyPaw.getRdyShipRedPaws() + completed); // needs fixing
+                        this._redPawBlisterWaiting -= completed;
                         break;
                 }
                 break;
             case "blue":
                 switch (design) {
                     case "Paw":
-                        RawMaterials.Blisters.setTotalPawBlisters(RawMaterials.Blisters.getTotalPawBlisters() - completed);
-                        RawMaterials.Stickers.setBlueTruckUPCTotal(RawMaterials.Stickers.getBlueTruckUPCTotal() - completed);
-                        Product.gigglyfeet.puppyPaw.setRdyShipBluePaws(Product.gigglyfeet.puppyPaw.getRdyShipBluePaws() + completed);
-                        this.bluePawBlisterWaiting -= completed;
+                        Blisters.setTotalPawBlisters(Blisters.getTotalPawBlisters() - completed); //needs fixing
+                        Stickers.setBlueTruckUPCTotal(Stickers.getBlueTruckUPCTotal() - completed); //needs fixing
+                        Gigglyfeet.puppyPaw.setRdyShipBluePaws(Gigglyfeet.puppyPaw.getRdyShipBluePaws() + completed); //needs fixing
+                        this._bluePawBlisterWaiting -= completed;
                         break;
                 }
                 break;
             case "black":
                 switch (design) {
                     case "Paw":
-                        RawMaterials.Blisters.setTotalPawBlisters(RawMaterials.Blisters.getTotalPawBlisters() - completed);
-                        RawMaterials.Stickers.setBlackTruckUPCTotal(RawMaterials.Stickers.getBlackTruckUPCTotal() - completed);
-                        Product.gigglyfeet.puppyPaw.setRdyShipBlackPaws(Product.gigglyfeet.puppyPaw.getRdyShipBlackPaws() + completed);
-                        this.blackPawBlisterWaiting -= completed;
+                        Blisters.setTotalPawBlisters(Blisters.getTotalPawBlisters() - completed); //needs fixing
+                        Stickers.setBlackTruckUPCTotal(Stickers.getBlackTruckUPCTotal() - completed); //needs fixing
+                        Gigglyfeet.puppyPaw.setRdyShipBlackPaws(Gigglyfeet.puppyPaw.getRdyShipBlackPaws() + completed); //needs fixing
+                        this._blackPawBlisterWaiting -= completed;
                         break;
                 }
                 break;
@@ -773,110 +778,115 @@ class Shipping{
             case "red":
                 switch (design) {
                     case "Truck":
-                        RawMaterials.Stickers.setRedTruckUPCTotal(RawMaterials.Stickers.getRedTruckUPCTotal() - completed);
-                        Product.gigglygrills.truckFront.setRdyShipRedTruck(Product.gigglygrills.truckFront.getRdyShipRedTruck() + completed);
-                        this.redTruckPackWaiting -= completed;
+                        Stickers.setRedTruckUPCTotal(Stickers.getRedTruckUPCTotal() - completed); //needs fixing
+                        Gigglygrills.truckFront.setRdyShipRedTruck(Gigglygrills.truckFront.getRdyShipRedTruck() + completed); //needs fixing
+                        this._redTruckPackWaiting -= completed;
                         break;
                     case "Noteboard":
-                        RawMaterials.Stickers.setRedNoteboardUPCTotal(RawMaterials.Stickers.getRedNoteboardUPCTotal() - completed);
-                        Product.gigglygrills.Noteboard.setRdyShipRedNoteboard(Product.gigglygrills.Noteboard.getRdyShipRedNoteboard() + completed);
-                        this.redNoteboardPackWaiting -= completed;
+                        Stickers.setRedNoteboardUPCTotal(Stickers.getRedNoteboardUPCTotal() - completed); //needs fixing
+                        Gigglygrills.Noteboard.setRdyShipRedNoteboard(Gigglygrills.Noteboard.getRdyShipRedNoteboard() + completed); //needs fixing
+                        this._redNoteboardPackWaiting -= completed;
                         break;
                 }
                 break;
             case "blue":
                 switch (design) {
                     case "Truck":
-                        RawMaterials.Stickers.setBlueTruckUPCTotal(RawMaterials.Stickers.getBlueTruckUPCTotal() - completed);
-                        Product.gigglygrills.truckFront.setRdyShipBlueTruck(Product.gigglygrills.truckFront.getRdyShipBlueTruck() + completed);
-                        this.blueTruckPackWaiting -= completed;
+                        Stickers.setBlueTruckUPCTotal(Stickers.getBlueTruckUPCTotal() - completed); //needs fixing
+                        Gigglygrills.truckFront.setRdyShipBlueTruck(Gigglygrills.truckFront.getRdyShipBlueTruck() + completed); //needs fixing
+                        this._blueTruckPackWaiting -= completed;
                         break;
                     case "Noteboard":
-                        RawMaterials.Stickers.setBlueNoteboardUPCTotal(RawMaterials.Stickers.getBlueNoteboardUPCTotal() - completed);
-                        Product.gigglygrills.Noteboard.setRdyShipBlueNoteboard(Product.gigglygrills.Noteboard.getRdyShipBlueNoteboard() + completed);
-                        this.blueNoteboardPackWaiting -= completed;
+                        Stickers.setBlueNoteboardUPCTotal(Stickers.getBlueNoteboardUPCTotal() - completed); //needs fixing
+                        Gigglygrills.Noteboard.setRdyShipBlueNoteboard(Gigglygrills.Noteboard.getRdyShipBlueNoteboard() + completed); //needs fixing
+                        this._blueNoteboardPackWaiting -= completed;
                         break;
                 }
                 break;
             case "black":
                 switch (design) {
                     case "Truck":
-                        RawMaterials.Stickers.setBlackTruckUPCTotal(RawMaterials.Stickers.getBlackTruckUPCTotal() - completed);
-                        Product.gigglygrills.truckFront.setRdyShipBlackTruck(Product.gigglygrills.truckFront.getRdyShipBlackTruck() + completed);
-                        this.blackTruckPackWaiting -= completed;
+                        Stickers.setBlackTruckUPCTotal(Stickers.getBlackTruckUPCTotal() - completed); //needs fixing
+                        Gigglygrills.truckFront.setRdyShipBlackTruck(Gigglygrills.truckFront.getRdyShipBlackTruck() + completed); //needs fixing
+                        this._blackTruckPackWaiting -= completed;
                         break;
                     case "Noteboard":
-                        RawMaterials.Stickers.setBlackNoteboardUPCTotal(RawMaterials.Stickers.getBlackNoteboardUPCTotal() - completed);
-                        Product.gigglygrills.Noteboard.setRdyShipBlackNoteboard(Product.gigglygrills.Noteboard.getRdyShipBlackNoteboard() + completed);
-                        this.blackNoteboardPackWaiting -= completed;
+                        Stickers.setBlackNoteboardUPCTotal(Stickers.getBlackNoteboardUPCTotal() - completed); //needs fixing
+                        Gigglygrills.Noteboard.setRdyShipBlackNoteboard(Gigglygrills.Noteboard.getRdyShipBlackNoteboard() + completed); //needs fixing
+                        this._blackNoteboardPackWaiting -= completed;
                         break;
                 }
                 break;
         }
     }
     walkerPackage(walkerType, design, completed) {
-        RawMaterials.WalkerBoxes.setTotalWalkerBoxes(RawMaterials.WalkerBoxes.getTotalWalkerBoxes() - completed);
-        RawMaterials.Polybags.setTotalPolybags(RawMaterials.Polybags.getTotalPolybags() - completed);
+        WalkerBoxes.setTotalWalkerBoxes(RawMaterials.WalkerBoxes.getTotalWalkerBoxes() - completed); //needs fixing
+        Polybags.setTotalPolybags(RawMaterials.Polybags.getTotalPolybags() - completed); //needs fixing
         switch (walkerType) {
             case "four-wheel":
                 switch (design) {
                     case "Wonderfall":
-                        RawMaterials.Stickers.setWonderfallSkin4wUPCTotal(RawMaterials.Stickers.getWonderfallSkin4wUPCTotal() - completed);
-                        Product.gigglyskins.setRdyShipWonderfallSkins4W(Product.gigglyskins.getRdyShipWonderfallSkins4W() + completed);
-                        this.wonderfallSkin4WPackWaiting -= completed;
+                        Stickers.setWonderfallSkin4wUPCTotal(Stickers.getWonderfallSkin4wUPCTotal() - completed); //needs fixing
+                        Gigglyskins.setRdyShipWonderfallSkins4W(Gigglyskins.getRdyShipWonderfallSkins4W() + completed); //needs fixing
+                        this._wonderfallSkin4WPackWaiting -= completed;
                         break;
                     case "Barktastic":
-                        RawMaterials.Stickers.setBarktasticSkin4wUPCTotal(RawMaterials.Stickers.getBarktasticSkin4wUPCTotal() - completed);
-                        Product.gigglyskins.setRdyShipBarktasticSkins4W(Product.gigglyskins.getRdyShipBarktasticSkins4W() + completed);
-                        this.barktasticSkin4WPackWaiting -= completed;
+                        Stickers.setBarktasticSkin4wUPCTotal(Stickers.getBarktasticSkin4wUPCTotal() - completed); //needs fixing
+                        Gigglyskins.setRdyShipBarktasticSkins4W(Gigglyskins.getRdyShipBarktasticSkins4W() + completed); //needs fixing
+                        this._barktasticSkin4WPackWaiting -= completed;
                         break;
                     case "Flowerific":
-                        RawMaterials.Stickers.setFlowerificSkin4wUPCTotal(RawMaterials.Stickers.getFlowerificSkin4wUPCTotal() - completed);
-                        Product.gigglyskins.setRdyShipFlowerificSkins4W(Product.gigglyskins.getRdyShipFlowerificSkins4W() + completed);
-                        this.flowerificSkin4WPackWaiting -= completed;
+                        Stickers.setFlowerificSkin4wUPCTotal(Stickers.getFlowerificSkin4wUPCTotal() - completed); //needs fixing
+                        Gigglyskins.setRdyShipFlowerificSkins4W(Gigglyskins.getRdyShipFlowerificSkins4W() + completed); //needs fixing
+                        this._flowerificSkin4WPackWaiting -= completed;
                         break;
                     case "Patriotic":
-                        RawMaterials.Stickers.setPatrioticSkin4wUPCTotal(RawMaterials.Stickers.getPatrioticSkin4wUPCTotal() - completed);
-                        Product.gigglyskins.setRdyShipPatrioticSkins4W(Product.gigglyskins.getRdyShipPatrioticSkins4W() + completed);
-                        this.patrioticSkin4WPackWaiting -= completed;
+                        Stickers.setPatrioticSkin4wUPCTotal(Stickers.getPatrioticSkin4wUPCTotal() - completed); //needs fixing
+                        Gigglyskins.setRdyShipPatrioticSkins4W(Gigglyskins.getRdyShipPatrioticSkins4W() + completed); //needs fixing
+                        this._patrioticSkin4WPackWaiting -= completed;
                         break;
                     case "Military":
-                        RawMaterials.Stickers.setMilitarySkin4wUPCTotal(RawMaterials.Stickers.setMilitarySkin4wUPCTotal() - completed);
-                        Product.gigglyskins.setRdyShipMilitarySkins4W(Product.gigglyskins.getRdyShipMilitarySkins4W() + completed);
-                        this.militarySkin4WPackWaiting -= completed;
+                        Stickers.setMilitarySkin4wUPCTotal(Stickers.setMilitarySkin4wUPCTotal() - completed); //needs fixing
+                        Gigglyskins.setRdyShipMilitarySkins4W(Gigglyskins.getRdyShipMilitarySkins4W() + completed); //needs fixing
+                        this._militarySkin4WPackWaiting -= completed;
                         break;
                 }
                 break;
             case "two-wheel":
                 switch (design) {
                     case "Wonderfall":
-                        RawMaterials.Stickers.setWonderfallSkin2wUPCTotal(RawMaterials.Stickers.getWonderfallSkin2wUPCTotal() - completed);
-                        Product.gigglyskins.setRdyShipWonderfallSkins2W(Product.gigglyskins.getRdyShipWonderfallSkins2W() + completed);
-                        this.wonderfallSkin2WPackWaiting -= completed;
+                        Stickers.setWonderfallSkin2wUPCTotal(Stickers.getWonderfallSkin2wUPCTotal() - completed); //needs fixing
+                        Gigglyskins.setRdyShipWonderfallSkins2W(Gigglyskins.getRdyShipWonderfallSkins2W() + completed); //needs fixing
+                        this._wonderfallSkin2WPackWaiting -= completed;
                         break;
                     case "Barktastic":
-                        RawMaterials.Stickers.setBarktasticSkin2wUPCTotal(RawMaterials.Stickers.getBarktasticSkin2wUPCTotal() - completed);
-                        Product.gigglyskins.setRdyShipBarktasticSkins2W(Product.gigglyskins.getRdyShipBarktasticSkins2W() + completed);
-                        this.barktasticSkin2WPackWaiting -= completed;
+                        Stickers.setBarktasticSkin2wUPCTotal(Stickers.getBarktasticSkin2wUPCTotal() - completed); //needs fixing
+                        Gigglyskins.setRdyShipBarktasticSkins2W(Gigglyskins.getRdyShipBarktasticSkins2W() + completed); //needs fixing
+                        this._barktasticSkin2WPackWaiting -= completed;
                         break;
                     case "Flowerific":
-                        RawMaterials.Stickers.setFlowerificSkin2wUPCTotal(RawMaterials.Stickers.getFlowerificSkin2wUPCTotal() - completed);
-                        Product.gigglyskins.setRdyShipFlowerificSkins2W(Product.gigglyskins.getRdyShipFlowerificSkins2W() + completed);
-                        this.flowerificSkin2WPackWaiting -= completed;
+                        Stickers.setFlowerificSkin2wUPCTotal(Stickers.getFlowerificSkin2wUPCTotal() - completed); //needs fixing
+                        Gigglyskins.setRdyShipFlowerificSkins2W(Gigglyskins.getRdyShipFlowerificSkins2W() + completed); //needs fixing
+                        this._flowerificSkin2WPackWaiting -= completed;
                         break;
                     case "Patriotic":
-                        RawMaterials.Stickers.setPatrioticSkin2wUPCTotal(RawMaterials.Stickers.getPatrioticSkin2wUPCTotal() - completed);
-                        Product.gigglyskins.setRdyShipPatrioticSkins2W(Product.gigglyskins.getRdyShipPatrioticSkins2W() + completed);
-                        this.patrioticSkin2WPackWaiting -= completed;
+                        Stickers.setPatrioticSkin2wUPCTotal(Stickers.getPatrioticSkin2wUPCTotal() - completed); //needs fixing
+                        Gigglyskins.setRdyShipPatrioticSkins2W(Gigglyskins.getRdyShipPatrioticSkins2W() + completed); //needs fixing
+                        this._patrioticSkin2WPackWaiting -= completed;
                         break;
                     case "Military":
-                        RawMaterials.Stickers.setMilitarySkin2wUPCTotal(RawMaterials.Stickers.getMilitarySkin2wUPCTotal() - completed);
-                        Product.gigglyskins.setRdyShipMilitarySkins2W(Product.gigglyskins.getRdyShipMilitarySkins2W() + completed);
-                        this.militarySkin2WPackWaiting -= completed;
+                        Stickers.setMilitarySkin2wUPCTotal(Stickers.getMilitarySkin2wUPCTotal() - completed); //needs fixing
+                        Gigglyskins.setRdyShipMilitarySkins2W(Gigglyskins.getRdyShipMilitarySkins2W() + completed); //needs fixing
+                        this._militarySkin2WPackWaiting -= completed;
                         break;
                 }
         }
     }
 }
 
-
+module.exports = {
+    Belovac: Belovac,
+    Cutting: Cutting,
+    Assembly: Assembly,
+    Shipping: Shipping,
+}
