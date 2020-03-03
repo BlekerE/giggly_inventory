@@ -1,44 +1,43 @@
-class Department{
-    set ID(input){
+class Department {
+    set ID(input) {
         this._depID = input
     }
-    get ID(){
+    get ID() {
         return this._depID;
     }
-    set location(input){
+    set location(input) {
         this._location = input;
     }
-    get location(){
+    get location() {
         return this._location;
     }
-    set name(input){
+    set name(input) {
         this._name = input;
     }
-    get name(){
+    get name() {
         return this._name;
     }
 }
 
-class DepartmentManagers extends Department{
-    set managersID (user) {
+class DepartmentManagers extends Department {
+    set managersID(user) {
         this._managersID = user
     }
-    get managersID(){
+    get managersID() {
         return this._managersID
     }
-    set managersDep(dep){
+    set managersDep(dep) {
         this._managersDep = dep
     }
-    get managersDep(){
+    get managersDep() {
         return this._managersDep
     }
-    departmentManagersToString(){
+    departmentManagersToString() {
         return this._managersDep + " " + this._managersID;
     }
 }
 
 module.exports = {
-    Department : Department,
+    Department: Department,
     DepartmentManagers: DepartmentManagers
 }
-
