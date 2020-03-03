@@ -273,7 +273,7 @@ class Walkers {
             return false
         }
     }
-    walker4WTotal() {
+    walker4WLow() {
         if (this._walker4WTotal < 50) {
             return true
         } else {
@@ -818,7 +818,7 @@ class BlisterCards {
     }
 }
 
-class WalkerBoxes {
+class WalkerBoxes extends RawMaterials {
     //totalWalkerBoxes
     set totalWalkerBoxes(newB) {
         this._totalWalkerBoxes = newB
@@ -837,7 +837,7 @@ class WalkerBoxes {
 class RawMaterials {
     //walkerBoxesLow: walkerBoxesLow()
     get walkerBoxesLow() {
-        this._walkerBoxesLow = WalkerBoxes.walkerBoxesLow()
+        this._walkerBoxesLow = this.walkerBoxesLow()
         return this._walkerBoxesLow
     }
     //blisterCardsLow: blisterCardsLow(),
@@ -1138,4 +1138,23 @@ class RawMaterials {
     //getPolybagsLow: function () {
     //    return this.polybagsLow
     //}
+}
+
+module.exports = {
+    Screws: Screws,
+    ShippingEnvelopes: ShippingEnvelopes,
+    Polybags: Polybags,
+    ABSPlastic: ABSPlastic,
+    PuppyFeet: PuppyFeet,
+    Walkers: Walkers,
+    Grommets: Grommets,
+    Velcro: Velcro,
+    VinylRolls: VinylRolls,
+    Stickers: Stickers,
+    GrillBoxes: GrillBoxes,
+    Cores: Cores,
+    Blisters: Blisters,
+    BlisterCards: BlisterCards,
+    WalkerBoxes: WalkerBoxes,
+    RawMaterials: RawMaterials
 }
